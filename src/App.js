@@ -1,9 +1,9 @@
 import "./App.css";
+import WelcomeProp from "./WelcomeProp";
 import Article from "./Article";
 import Board from "./Board";
 
-
-const data = [
+const posts = [
   {
     id: 1,
     title: "React 시작하기",
@@ -78,8 +78,8 @@ const data = [
 
 function App() {
   return (
- //화면 그려주는 공간
- <>{posts && posts.map((e) = > <Board key ={e,id} post ={e} />)} </>
+    // 화면을 그려 주는 구간
+    <>{posts && posts.map((e) => <Board key={e.id} post={e} />)}</>
   );
 }
 
