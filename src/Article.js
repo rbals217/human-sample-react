@@ -8,10 +8,10 @@
 const Article = ({ data }) => {
   return (
     <>
-      <h3>제목 : {data.title}</h3>
-      <p> 내용 : {data.content}</p>
-      <p> 작성시간 : {data.regDate}</p>
-      <p> 작성자 : {data.name}</p>
+      <h2>제목 : {data.title}</h2>
+      <p>내용 : {data.content}</p>
+      <p>작성자: {data.writer}</p>
+      <p>날짜 : {data.date}</p>
     </>
   );
 };
