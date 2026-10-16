@@ -10,7 +10,7 @@ const WelcomeProp = ({
   age = 0,
   addr = "서울",
 }) => {
-  // const {name, gender, age, addr} =props; // 이런 방식을 구조 분해 (혹은 위에 props에 할당하면 비구조화 )
+  // const {name, gender, age, addr} =props; // 변수를 상수안에 할당하면  구조 분해 (혹은 위에 props에 변수를 할당하면 비구조화 )
   return (
     <>
       <h3> 이름: {name}</h3>
