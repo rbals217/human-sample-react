@@ -15,11 +15,12 @@ const Say = () => {
         placeholder="이름 입력"
         onChange={(e) => setName(e.target.value)}
       />
-      <br />
+
       <button onClick={() => setMessage(`안녕하세요 ${name}님`)}>입장</button>
       <button onClick={() => setMessage(`안녕히 가세요 ${name}님`)}>
         퇴장
       </button>
+
       <button onClick={() => setMessage(`환영합니다. ${name}님`)}>웰컴</button>
       <button onClick={() => setMessage("")}>지우기</button>
 

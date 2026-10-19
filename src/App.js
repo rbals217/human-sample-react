@@ -1,9 +1,11 @@
 import "./App.css";
+import Average from "./Average";
 
-import Table from "./Table";
+import Count from "./Count";
+import Infomation from "./Infomation";
 
 function App() {
-  return <Table />;
+  return <Average />;
 }
 
 export default App;
