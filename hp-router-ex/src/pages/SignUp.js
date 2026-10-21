@@ -1,56 +1,50 @@
-import styled from "styled-components";
-import Button from "../components/common/Button";
-import Input from "../components/common/Input";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Container = styled.div`
-  display: flex;
-  width: 500px;
-  margin: 10px auto;
-  flex-direction: column;
-`;
+export default function SignUp() {
+  const navigate = useNavigate();
+  const [id, setId] = useState("");
+  const [pwd, setPwd] = useState("");
 
-const Form = styled.form`
-  width: 500px;
-  display: flex;
-  margin: 10px auto;
-  flex-direction: column;
-`;
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-const Title = styled.h1`
-  margin: 0 0 12px;
-  text-align: center;
-  font-size: 1rem;
-`;
+    localStorage.setItem("id", id);
+    localStorage.setItem("pwd", pwd);
 
-function Signup() {
-  const [form, setForm] = useState({ email: "" });
-  const [errors, setErrors] = useState({});
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    navigate("/login");
   };
 
   return (
-    <Container>
-      <Form>
-        <Title>회원가입</Title>
-
-        <Input
-          label="이메일"
-          type="email"
-          name="email"
-          placeholder="example@email.com"
-          value={form.email}
-          onChange={handleChange}
-          error={errors.email}
-        />
-
-        <Button type="submit">가입하기</Button>
-      </Form>
-    </Container>
+    <div className="signup-box">
+      <div className="title">SignUp Page</div>
+      <div className="signup-title">
+        <form onSubmit={handleSubmit}>
+          <p>ID (Email)</p>
+          <input
+            type="text"
+            id="id"
+            placeholder="Email Address"
+            value={id}
+            onChange={(e) => setId(e.target.value)}
+            required
+          />
+          <br />
+          <p>비밀번호</p>
+          <input
+            type="password"
+            id="pwd"
+            placeholder="Password"
+            value={pwd}
+            onChange={(e) => setPwd(e.target.value)}
+            required
+          />
+          <br />
+          <button type="submit" className="button">
+            Register
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
-
-export default Signup;
