@@ -1,9 +1,16 @@
 import "./App.css";
+import About from "./pages/About";
+import Home from "./pages/Home";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 function App() {
   return (
     <>
-      <button type="submit">가입하기</button>
-      <button type="button">취소</button>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </Router>
     </>
   );
 }
