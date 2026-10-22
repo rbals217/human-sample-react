@@ -46,3 +46,89 @@
 .SignUp-link:hover {
   text-decoration: underline;
 }
+
+.SignUp-page {
+  min-height: 100vh; /* 화면 전체 높이 */
+  display: flex;
+  justify-content: center; /* 가로 가운데 */
+  align-items: center; /* 세로 가운데 */
+}
+
+.SignUp-box {
+  width: 500px;
+  padding: 30px;
+}
+.SignUp-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.title {
+  text-align: center;
+  font-size: 34px;
+  margin-bottom: 30px;
+}
+.Signup-title form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.Signup-title input {
+  width: 300px;
+  height: 40px;
+  font-size: 20px;
+  border: 1px solid black;
+  border-radius: 15px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.Signup-title p {
+  width: 300px;
+  text-align: left;
+  margin: 0 0 6px;
+}
+.Signup-title button {
+  width: 250px;
+  height: 1.5rem;
+  border-radius: 25px;
+  border: #61dafb;
+}
+
+.login-page {
+  min-height: 100vh; /* 화면 전체 높이 */
+  display: flex;
+  justify-content: center; /* 가로 가운데 */
+  align-items: center; /* 세로 가운데 */
+}
+.login-box {
+  width: 500px;
+  padding: 30px;
+}
+.login-title form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.login-title input {
+  width: 300px;
+  height: 40px;
+  font-size: 20px;
+  border: 1px solid black;
+  border-radius: 15px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.login-title p {
+  width: 300px;
+  text-align: left;
+  margin: 0 0 6px;
+}
+.login-title button {
+  width: 250px;
+  height: 1.5rem;
+  border-radius: 25px;
+  border: #61dafb;
+}

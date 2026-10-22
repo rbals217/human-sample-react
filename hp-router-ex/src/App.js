@@ -16,10 +16,14 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/SignUp" replace />} />
+        <Route path="/" element={<Navigate to="/signup" replace />} />
+
+        {/* Layout 바깥: header/footer 없음 */}
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+
+        {/* Layout 안쪽: header/footer 있음 */}
         <Route element={<Layout />}>
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/profile/:name" element={<Profile />} />

@@ -20,34 +20,38 @@ export default function Login() {
   };
 
   return (
-    <div className="login-box">
-      <div className="title">Login Page</div>
-      <div className="login-title">
-        <form onSubmit={handleSubmit}>
-          <p>ID</p>
-          <input
-            type="text"
-            id="id"
-            placeholder="Email Address"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-            required
-          />
-          <br />
-          <p>비밀번호</p>
-          <input
-            type="password"
-            id="pwd"
-            placeholder="Password"
-            value={pwd}
-            onChange={(e) => setPwd(e.target.value)}
-            required
-          />
-          <br />
-          <button type="submit" className="button">
-            Login
-          </button>
-        </form>
+    <div className="login-page">
+      <div className="login-box">
+        <div className="title">Login Page</div>
+        <div className="login-title">
+          <form onSubmit={handleSubmit}>
+            <p>ID</p>
+            <input
+              type="text"
+              id="id"
+              placeholder="Email Address"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+              required
+            />
+            <br />
+            <p>비밀번호</p>
+            <input
+              type="password"
+              id="pwd"
+              placeholder="Password"
+              value={pwd}
+              onChange={(e) => setPwd(e.target.value)}
+              required
+            />
+            <br />
+            <button type="submit" className="button">
+              Login
+            </button>
+            <br />
+            <Link to="/SignUp">Register</Link>
+          </form>
+        </div>
       </div>
     </div>
   );
