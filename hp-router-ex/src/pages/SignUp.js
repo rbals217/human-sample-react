@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AxiosApi from "../api/AxiosApi";
 
 /* ───────── 정규식 ───────── */
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -11,11 +12,14 @@ export default function SignUp() {
   const navigate = useNavigate();
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
+  const [name, setName] = useState("");
 
   const isEmail = EMAIL_REGEX.test(id);
   const isPwd = PWD_REGEX.test(pwd);
-
-  const handleSubmit = (e) => {
+  const isName = NAME_REGEX.test(name);
+  // const [emailCheck, setEmailCheck] = useState(null);
+  // const [checkedEmail, setCheckedEmail] = useState("");
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!isEmail) {
@@ -28,11 +32,24 @@ export default function SignUp() {
       );
       return;
     }
+    if (!isName) {
+      alert("이름은 한글 또는 영문 2~10자로 입력해 주세요.");
+      return;
+    }
 
-    localStorage.setItem("id", id);
-    localStorage.setItem("pwd", pwd);
-
-    navigate("/login");
+    try {
+      const res = await AxiosApi.memberSignUp(id, pwd, name);
+      console.log(res.data);
+      if (res.data === true) {
+        alert(`${name}님, 회원가입이 성공했습니다.`);
+        navigate("/login", { replace: true });
+      } else {
+        alert("회원가입에 실패했습니다. 입력 정보를 확인해 주세요.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("서버와 통신 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -84,6 +101,29 @@ export default function SignUp() {
                 {isPwd
                   ? "사용가능한 비밀번호입니다."
                   : "8~20자, 영문+숫자+특수문자(!@#$%^&*)를 각각 1개 이상 포함해야 합니다."}
+              </p>
+            )}
+            <br />
+            <p>이름</p>
+            <input
+              type="text"
+              id="name"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+            {name && (
+              <p
+                style={{
+                  color: isName ? "green" : "red",
+                  fontSize: "12px",
+                  textAlign: "right",
+                }}
+              >
+                {isName
+                  ? "사용가능한 이름입니다."
+                  : "한글 또는 영문 2~10자로 입력해 주세요."}
               </p>
             )}
             <br />
