@@ -20,6 +20,8 @@ const Home = () => {
       <Link to="/about">소개 페이지로 이동</Link>
       <br />
       <Link to="/SignUp">로그아웃하기</Link>
+      <br />
+      <Link to="/board">게시판으로 이동</Link>
 
       <h3>콤보 박스로 프로필 이동</h3>
       <select value={selected} onChange={handleChange}>

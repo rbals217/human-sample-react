@@ -1,21 +1,28 @@
+import AxiosApi from "../api/AxiosApi";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [id, setId] = useState(() => localStorage.getItem("id") || "");
-  const [pwd, setPwd] = useState(() => localStorage.getItem("pwd") || "");
+  const [id, setId] = useState("");
+  const [pwd, setPwd] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const savedId = localStorage.getItem("id");
-    const savedPwd = localStorage.getItem("pwd");
+    try {
+      const res = await AxiosApi.memberLogin(id, pwd);
+      console.log(res.data);
 
-    if (savedId === id && savedPwd === pwd) {
-      navigate("/home");
-    } else {
-      alert("ID 또는 비밀번호가 올바르지 않습니다.");
+      if (res.data === true) {
+        localStorage.setItem("email", id);
+        navigate("/home");
+      } else {
+        alert("ID 또는 비밀번호가 올바르지 않습니다.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("서버와 통신 중 오류가 발생했습니다.");
     }
   };
 
