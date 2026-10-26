@@ -1,4 +1,5 @@
 import "./App.css";
+<<<<<<< HEAD
 import About from "./pages/About";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
@@ -28,6 +29,15 @@ function App() {
       </Routes>
     </Router>
   );
+=======
+import Average from "./Average";
+
+import Count from "./Count";
+import Infomation from "./Infomation";
+
+function App() {
+  return <Average />;
+>>>>>>> f6d74caf9cccdfca9eebce8330c96269b8fa215f
 }
 
 export default App;
