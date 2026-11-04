@@ -26,6 +26,16 @@ const AxiosApi = {
       content,
       email,
     }),
+  // 1. 전체 콘서트 목록 가져오기 함수
+  getAllConcerts: async () => {
+    return await axios.get(`${HM_DOMAIN}/concerts`);
+  },
+  //2 . 특정 콘서트 상세 정보 가져오기 함수
+  getReservationDetail: async (concertId) => {
+    return await axios.get(`${HM_DOMAIN}/concerts/${concertId}`);
+  },
+
+  // 2. 특정
 
   boardList: async () => axios.get(HM_DOMAIN + "/board/list"),
 
@@ -42,7 +52,7 @@ const AxiosApi = {
 
   // 공연 회차 관련
   getSchedules: async (concertId) =>
-    axios.get(HM_DOMAIN + `/concerts/${concertId}/schedules`),
+    axios.get(`${HM_DOMAIN}/concerts/${concertId}/schedules`),
   //공연 회차 등록
   createSchedule: async (concertId, scheduleData) =>
     axios.post(HM_DOMAIN + `/concerts/${concertId}/schedules`, scheduleData),
