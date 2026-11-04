@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import AxiosApi from "../../api/AxiosApi";
-import Button from "../../components/common/Button";
-import Input from "../../components/common/Input";
+import Button from "../../Components/common/Button";
+import Input from "../../Components/common/Input";
 
 const Container = styled.div`
   max-width: 720px;
@@ -58,9 +58,9 @@ const CancelBtn = styled.button`
 `;
 
 const BoardWrite = () => {
-  const [title, setTitle] = useState(""); // 제목
-  const [content, setContent] = useState(""); // 내용
-  const nav = useNavigate(); // 페이지 이동
+  const [title, setTitle] = useState(""); //제목
+  const [content, setContent] = useState(""); //내용
+  const nav = useNavigate(); //페이지 이동
 
   // 제목, 내용 모두 입력돼야 등록 버튼 활성화
   const isValid = title.trim() !== "" && content.trim() !== "";
@@ -69,7 +69,7 @@ const BoardWrite = () => {
     e.preventDefault();
     if (!isValid) return;
 
-    // 로그인할 때 저장해 둔 이메일을 작성자로 사용
+    //로그인 할 때 저장해 둔 이메일을 작성자로 사용
     const email = localStorage.getItem("email");
     if (!email) {
       alert("로그인이 필요합니다.");
@@ -82,7 +82,7 @@ const BoardWrite = () => {
       console.log(res.data);
       if (res.data) {
         alert("게시글이 등록되었습니다.");
-        nav("/board", { replace: true }); // 뒤로가기로 작성 화면에 다시 오지 않도록
+        nav("/board", { replace: true }); //뒤로가기로 작성 화면에 다시 오지 않도록
       } else {
         alert("게시글 등록에 실패했습니다.");
       }
@@ -98,7 +98,7 @@ const BoardWrite = () => {
         <Title>글쓰기</Title>
         <Input
           value={title}
-          placeholder="제목을 입력하세요"
+          placeholder={"제목을 입력하세요"}
           onChange={(e) => setTitle(e.target.value)}
         />
         <TextArea

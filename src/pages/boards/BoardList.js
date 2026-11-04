@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import AxiosApi from "../../api/AxiosApi";
-import BoardItem from "../../components/board/BoardItem";
+import BoardItem from "../../Components/board/BoardItem";
 
 const Container = styled.div`
   max-width: 720px;
@@ -79,7 +79,7 @@ const BoardList = () => {
   return (
     <Container>
       <Top>
-        <Title>게시판</Title>
+        <title>게시판</title>
         <WriteBtn onClick={() => nav("/board/write")}>글쓰기</WriteBtn>
       </Top>
       {boards.length === 0 ? (

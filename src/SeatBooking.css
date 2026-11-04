@@ -1,0 +1,112 @@
+.booking-page {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.booking-page h1 {
+  margin-bottom: 30px;
+}
+
+/* 영화 스크린 */
+.screen {
+  width: 80%;
+  margin: 30px auto;
+  padding: 12px;
+  background: #333;
+  color: white;
+  border-radius: 50% 50% 5px 5px;
+  letter-spacing: 5px;
+}
+
+/* 좌석 배치 */
+.seat-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 45px);
+  justify-content: center;
+  gap: 8px;
+  margin: 30px 0;
+}
+
+/* 기본 좌석 */
+.seat {
+  width: 45px;
+  height: 40px;
+  border: none;
+  border-radius: 7px 7px 3px 3px;
+  background: #e5e7eb;
+  color: #333;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+/* 마우스를 올린 좌석 */
+.seat:not(:disabled):hover {
+  background: #93c5fd;
+}
+
+/* 선택한 좌석 */
+.seat.selected {
+  background: #2563eb;
+  color: white;
+}
+
+/* 이미 예약된 좌석 */
+.seat.reserved {
+  background: #9ca3af;
+  color: #555;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* 선택 좌석 안내 */
+.selected-info {
+  margin: 25px 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* 예매하기 버튼 */
+.booking-button {
+  padding: 12px 35px;
+  border: none;
+  border-radius: 8px;
+  background: #e11d48;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.booking-button:hover {
+  background: #be123c;
+}
+
+/* 예매 결과 메시지 */
+.message {
+  margin-top: 20px;
+  color: #2563eb;
+  font-weight: bold;
+}
+
+/* 작은 화면에서도 좌석이 보이도록 */
+@media (max-width: 520px) {
+  .booking-page {
+    padding: 10px;
+  }
+
+  .seat-grid {
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .seat {
+    width: 100%;
+    height: 34px;
+    font-size: 10px;
+  }
+}

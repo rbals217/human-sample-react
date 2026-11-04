@@ -10,14 +10,14 @@ const data = {
     description: "스프링 부트를 좋아하는 개발자",
   },
   dba: {
-    name: "천재 개발자",
+    name: "천재개발자",
     description: "DB를 좋아하는 개발자",
   },
 };
 
 const Profile = () => {
   const params = useParams();
-  const profile = data[params.name]; // 위에 데이터가 프로파일을 받아와서 네임을 반환받는것
+  const profile = data[params.name];
   return (
     <div>
       <h1>사용자 프로필</h1>
