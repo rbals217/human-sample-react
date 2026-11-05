@@ -5,7 +5,6 @@ import Button from "../Components/common/Button";
 import Input from "../Components/common/Input";
 import AxiosApi from "../api/AxiosApi";
 
-// 화면 전체를 차지하고, 가운데에 로그인 박스를 배치
 const Container = styled.div`
   min-height: 100vh;
   display: flex;
@@ -56,25 +55,39 @@ const SignupText = styled.p`
 `;
 
 const Login = () => {
-  const [inputEmail, setInputEmail] = useState("");
+  const [inputId, setInputId] = useState("");
   const [inputPwd, setInputPwd] = useState("");
 
   const nav = useNavigate();
 
   // 둘 다 입력돼야 버튼 활성화
-  const isValid = inputEmail.trim() !== "" && inputPwd !== "";
+  const isValid = inputId.trim() !== "" && inputPwd !== "";
 
   // form의 onSubmit으로 처리하면 Enter 키로도 로그인 가능
   const onSubmit = async (e) => {
     e.preventDefault(); // 페이지 새로고침 방지
 
     try {
-      const response = await AxiosApi.memberLogin(inputEmail, inputPwd);
+      const response = await AxiosApi.memberLogin(inputId, inputPwd);
       console.log(response.data);
 
       if (response.data) {
+        // ⭐ 수정 1: 로그인 상태 저장
         localStorage.setItem("isLogin", "TRUE");
-        localStorage.setItem("email", inputEmail);
+
+        // ⭐ 수정 2: 로그인 아이디 저장 (기존 코드 유지)
+        localStorage.setItem("userId", inputId);
+
+        // ⭐ 수정 3: 백엔드에서 반환한 회원 정보 전체 저장
+        localStorage.setItem("userInfo", JSON.stringify(response.data));
+
+        // ⭐ 수정 4: 회원 번호 별도 저장
+        localStorage.setItem("memberId", response.data.memberId);
+
+        // ⭐ 수정 5: 저장 결과 확인
+        console.log("로그인 회원 번호:", response.data.memberId);
+        console.log("저장된 회원 정보:", localStorage.getItem("userInfo"));
+
         nav("/", { replace: true }); // 메인 홈("/")으로 이동
       } else {
         alert("이메일 또는 비밀번호가 틀립니다.");
@@ -91,9 +104,9 @@ const Login = () => {
         <Title>로그인</Title>
         <Input
           type="text"
-          value={inputEmail}
+          value={inputId}
           placeholder="아이디를 입력하세요"
-          onChange={(e) => setInputEmail(e.target.value)}
+          onChange={(e) => setInputId(e.target.value)}
         />
         <Input
           type="password"

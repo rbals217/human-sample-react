@@ -62,6 +62,7 @@ function App() {
           <Route path="/mypage/reviews" element={<MyReviewList />} />
           <Route path="/mypage/customer-center" element={<CustomerCenter />} />
           <Route path="/mypage/account" element={<AccountInfo />} />
+          <Route path="/mypage/:memberId" element={<MyPageMain />} />
           <Route path="/mypage/payment" element={<PaymentManage />} />
           <Route path="/payment-register" element={<PaymentRegister />} />
           <Route path="/concertlist" element={<AllConcertMenu />} />

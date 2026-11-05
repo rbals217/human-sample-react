@@ -140,7 +140,14 @@ const Layout = () => {
           </Link>
           <Link to="/login">로그인</Link>
           <Link to="/signup">회원가입</Link>
-          <Link to="/mypage" className="mypage-link">
+          <Link
+            to={
+              localStorage.getItem("userInfo")
+                ? `/mypage/${JSON.parse(localStorage.getItem("userInfo")).memberId}`
+                : "/login"
+            }
+            className="mypage-link"
+          >
             MY PAGE
           </Link>
         </MenuNav>
