@@ -1,20 +1,23 @@
 import styled from "styled-components";
 
 const StyledInput = styled.input`
-  margin: 0 30px;
   width: 100%;
-  height: auto;
-  line-height: normal;
+  box-sizing: border-box; /* padding/border를 width 안에 포함 → 넘침 방지 */
   padding: 1em;
+  font-size: 15px;
   border: 1px solid #999;
   border-radius: 18px;
-  outline-style: none;
+  outline: none;
+
+  &:focus {
+    border-color: black;
+  }
 `;
 
-const Input = ({ value, onChange, placeholder }) => {
+const Input = ({ type = "text", value, onChange, placeholder }) => {
   return (
     <StyledInput
-      type="text"
+      type={type}
       placeholder={placeholder}
       value={value}
       onChange={onChange}

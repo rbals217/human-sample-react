@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../Components/common/BackButton";
 import AxiosApi from "../api/AxiosApi";
+
 const AccountInfo = () => {
   const navigate = useNavigate();
 
@@ -17,7 +18,6 @@ const AccountInfo = () => {
   // ⭐ 수정: 처음에는 로딩 상태
   const [loading, setLoading] = useState(true);
 
-  // ⭐ 수정: DB에서 회원 정보 가져오기
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -48,7 +48,6 @@ const AccountInfo = () => {
         setLoading(false);
       }
     };
-
     fetchUserData();
   }, []);
 
