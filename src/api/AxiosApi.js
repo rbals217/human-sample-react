@@ -78,31 +78,5 @@ const AxiosApi = {
   // 💡 [추가] 전체 콘서트 목록 조회 (AllConcertMenu.js 에러 해결용)
   getAllConcerts: async () => axios.get(HM_DOMAIN + "/concerts"),
 };
-// Axios 응답 인터셉터
-AxiosApi.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    console.log("===== API 요청 실패 =====");
-
-    if (error.response) {
-      console.log("HTTP 상태 코드:", error.response.status);
-      console.log("에러 메시지:", error.response.data);
-      console.log("요청 URL:", error.config?.url);
-      console.log("요청 방식:", error.config?.method);
-
-      if (error.response.status === 401) {
-        console.log("401: 로그인이 필요합니다.");
-      } else if (error.response.status === 403) {
-        console.log("403: 접근 권한이 없습니다.");
-      }
-    } else {
-      console.log("서버 응답 없음:", error.message);
-    }
-
-    return Promise.reject(error);
-  },
-);
 
 export default AxiosApi;
