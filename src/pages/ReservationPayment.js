@@ -3,8 +3,8 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../Components/common/Button";
 import BottomBar from "../Components/common/BottomBar";
-import axios from "axios";
-
+import AxiosApi from "../api/AxiosApi";
+import AxiosInstance from "../api/AxiosInstance";
 /* ───────── 스타일 컴포넌트 ───────── */
 const Container = styled.div`
   max-width: 600px;
@@ -134,10 +134,9 @@ const ReservationPayment = () => {
 
     // 5. 로그인 확인 후 백엔드에 결제 요청
     try {
-      const response = await axios.post(
-        `http://localhost:8111/reservations/${reservationId}/payment`,
+      const response = await AxiosInstance.post(
+        `/reservations/${reservationId}/payment`,
       );
-
       // 6. 백엔드 결제 성공 여부 확인
       if (response.data.status !== "PAID") {
         throw new Error("결제 완료 상태가 아닙니다.");

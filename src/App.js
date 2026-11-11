@@ -23,6 +23,9 @@ import CustomerCenter from "./pages/CustomerCenter";
 import AccountInfo from "./pages/AccountInfo";
 import PaymentManage from "./pages/PaymentManage";
 import PaymentRegister from "./pages/PaymentRegister";
+import ChatList from "./pages/chat/ChatList";
+import ChatRoomCreate from "./pages/chat/ChatRoomCreate";
+import Chatting from "./pages/chat/Chatting";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AllConcertMenu from "./pages/AllConcertMenu";
 
@@ -71,6 +74,9 @@ function App() {
           <Route path="/board/:boardId" element={<BoardDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/profile/:name" element={<Profile />} />
+          <Route path="/chat" element={<ChatList />} />
+          <Route path="/chat/create" element={<ChatRoomCreate />} />
+          <Route path="/chat/:roomId" element={<Chatting />} />
         </Route>
       </Routes>
     </Router>

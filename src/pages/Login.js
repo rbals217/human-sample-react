@@ -88,7 +88,6 @@ const Login = () => {
 
         // ⭐ 수정 5: 저장 결과 확인
         console.log("로그인 회원 번호:", response.data.memberId);
-        console.log("저장된 회원 정보:", localStorage.getItem("userInfo"));
 
         nav("/", { replace: true }); // 메인 홈("/")으로 이동
       } else {

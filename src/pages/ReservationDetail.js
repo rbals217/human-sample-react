@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Button from "../Components/common/Button";
 import BottomBar from "../Components/common/BottomBar";
 import AxiosApi from "../api/AxiosApi";
-import axios from "axios";
+
 /* ───────── 스타일 컴포넌트 ───────── */
 const Container = styled.div`
   max-width: 800px;
@@ -109,7 +109,7 @@ const ReservationDetail = () => {
   useEffect(() => {
     const loadConcert = async () => {
       try {
-        const response = await AxiosApi.getReservationDetail(id);
+        const response = await AxiosApi.getConcertDetail(id);
         setConcert(response.data);
         console.log("공연정보:", response.data);
       } catch (error) {
