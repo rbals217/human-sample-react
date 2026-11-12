@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Button from "../Components/common/Button"; // 공통 버튼 컴포넌트 (폼 등 다른 곳에서 사용)
 import Input from "../Components/common/Input"; // 공통 인풋 컴포넌트
 import logoImg from "../img/사이트 로고.png";
+import AxiosApi from "../api/AxiosApi";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -142,19 +143,28 @@ export default function Layout() {
   }, []);
 
   // 3. 로그아웃 처리 함수
-  const handleLogout = () => {
-    localStorage.removeItem("isLogin");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("memberId");
-    localStorage.removeItem("pwd");
+  const handleLogout = async () => {
+    try {
+      // 1. 백엔드 로그아웃 API 호출
+      await AxiosApi.memberLogout();
+    } catch (error) {
+      console.error("로그아웃 API 오류:", error);
+    } finally {
+      // 2. 성공/실패 여부와 관계없이 로컬 저장 정보 삭제
+      localStorage.removeItem("isLogin");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("memberId");
+      localStorage.removeItem("pwd");
 
-    setIsLogIn(false);
-    setUserId("");
+      // 3. React 로그인 상태 초기화
+      setIsLogIn(false);
+      setUserId("");
 
-    alert("로그아웃 되었습니다.");
-    window.location.replace("/");
+      alert("로그아웃 되었습니다.");
+      window.location.replace("/");
+    }
   };
 
   const handleSearchSubmit = () => {
