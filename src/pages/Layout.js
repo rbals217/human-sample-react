@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Button from "../Components/common/Button"; // 공통 버튼 컴포넌트 (폼 등 다른 곳에서 사용)
 import Input from "../Components/common/Input"; // 공통 인풋 컴포넌트
 import logoImg from "../img/사이트 로고.png";
-import AxiosApi from "../api/AxiosApi";
+import AxiosInstance from "../api/AxiosInstance"; // 토큰 자동 처리 Axios 인스턴스
 
 const Container = styled.div`
   min-height: 100vh;
@@ -142,26 +142,21 @@ export default function Layout() {
     }
   }, []);
 
-  // 3. 로그아웃 처리 함수
+  // 3. 로그아웃 처리 함수 (백엔드 연동)
   const handleLogout = async () => {
     try {
-      // 1. 백엔드 로그아웃 API 호출
-      await AxiosApi.memberLogout();
+      // 👉 백엔드의 로그아웃 API 호출 (AxiosInstance가 알아서 accessToken을 헤더에 담아줍니다)
+      await AxiosInstance.post("/auth/logout");
     } catch (error) {
-      console.error("로그아웃 API 오류:", error);
+      console.error("서버 로그아웃 통신 중 에러 발생:", error);
     } finally {
-      // 2. 성공/실패 여부와 관계없이 로컬 저장 정보 삭제
+      // 서버 통신 성공 여부와 상관없이 브라우저에 남은 찌꺼기(토큰 등)를 깔끔하게 청소
       localStorage.removeItem("isLogin");
       localStorage.removeItem("userId");
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
-      localStorage.removeItem("memberId");
-      localStorage.removeItem("pwd");
-
-      // 3. React 로그인 상태 초기화
       setIsLogIn(false);
       setUserId("");
-
       alert("로그아웃 되었습니다.");
       window.location.replace("/");
     }
@@ -200,6 +195,10 @@ export default function Layout() {
           {/* 4. 로그인 상태에 따른 조건부 렌더링 */}
           {isLogIn ? (
             <>
+              <Link to="/chat">채팅</Link> {/*로그인 했을떄만 링크 표시 */}
+              <button onClick={handleLogout} className="logout-btn">
+                로그아웃
+              </button>
               <span className="user-greeting">{userId}님</span>
               <button onClick={handleLogout} className="logout-btn">
                 로그아웃
