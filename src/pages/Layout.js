@@ -145,9 +145,14 @@ export default function Layout() {
   const handleLogout = () => {
     localStorage.removeItem("isLogin");
     localStorage.removeItem("userId");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("memberId");
+    localStorage.removeItem("pwd");
 
     setIsLogIn(false);
     setUserId("");
+
     alert("로그아웃 되었습니다.");
     window.location.replace("/");
   };

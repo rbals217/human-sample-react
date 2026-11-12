@@ -30,7 +30,10 @@ const AxiosApi = {
       pwd,
     });
   },
-
+  //로그아웃 함수
+  memberLogout: async () => {
+    return await AxiosInstance.post("/auth/logout");
+  },
   // 마이페이지 회원정보 조회
   getMypage: () => AxiosInstance.get("/auth/mypage"),
 

@@ -1,8 +1,10 @@
+// src/pages/mypage/AccountInfo.js
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../Components/common/BackButton";
 import AxiosApi from "../api/AxiosApi";
+import { maskName, maskPhone, maskEmail } from "../Components/common/Masking";
 
 const AccountInfo = () => {
   const navigate = useNavigate();
@@ -23,14 +25,13 @@ const AccountInfo = () => {
         // JWt 토큰을 이용해 내 회원 정보 조회
         const response = await AxiosApi.getMypage();
 
-        // DB 에서 받은 회원정보 저장
+        // 3. DB에서 받은 회원 정보 저장
         setUserInfo({
           userId: response.data.userId,
           email: response.data.email,
           name: response.data.name,
           phone: response.data.phone,
         });
-        console.log("DB에서 가져온 회원 정보:", response.data);
       } catch (error) {
         console.error("회원 정보 조회 실패:", error);
         alert("회원 정보를 불러오지 못했습니다.");
@@ -64,13 +65,13 @@ const AccountInfo = () => {
 
         <Row>
           <Label>이메일</Label>
-          <Value>{userInfo.email}</Value>
+          <Value>{maskEmail(userInfo.email)}</Value>
         </Row>
 
         <Row>
           <Label>이름</Label>
           <ValueGroup>
-            <span>{userInfo.name}</span>
+            <span>{maskName(userInfo.name)}</span>
             <ActionButton onClick={() => alert("이름 변경 클릭")}>
               변경
             </ActionButton>
@@ -80,7 +81,7 @@ const AccountInfo = () => {
         <Row>
           <Label>휴대폰 번호</Label>
           <ValueGroup>
-            <span>{userInfo.phone}</span>
+            <span>{maskPhone(userInfo.phone)}</span>
             <ActionButton onClick={() => alert("휴대폰 번호 변경 클릭")}>
               변경
             </ActionButton>

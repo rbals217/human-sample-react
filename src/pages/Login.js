@@ -77,7 +77,6 @@ const Login = () => {
         localStorage.setItem("refreshToken", response.data.refreshToken);
 
         // ⭐ 수정 1: 로그인 상태 저장
-        localStorage.setItem("isLogin", "TRUE");
 
         // ⭐ 수정 2: 로그인 아이디 저장 (기존 코드 유지)
         localStorage.setItem("userId", inputId);
@@ -85,9 +84,6 @@ const Login = () => {
         // ⭐ 수정 3: 백엔드에서 반환한 회원 정보 전체 저장
 
         // ⭐ 수정 4: 회원 번호 별도 저장
-
-        // ⭐ 수정 5: 저장 결과 확인
-        console.log("로그인 회원 번호:", response.data.memberId);
 
         nav("/", { replace: true }); // 메인 홈("/")으로 이동
       } else {
