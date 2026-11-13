@@ -24,11 +24,17 @@ let reissuePromise = null;
 AxiosInstance.interceptors.response.use(
   (res) => res,
   async (err) => {
+    console.log("API 에러 발생!");
+    console.log("요청 URL:", err.config?.url);
+    console.log("응답 상태:", err.response?.status);
+
     const original = err.config;
     const url = original?.url ?? "";
     // 로그인·재발급 요청 자체의 401은 그대로 실패 처리
     const isAuthCall =
-      url.includes("/auth/login") || url.includes("/auth/reissue");
+      url.uncludes("/auth/login") ||
+      url.includes("/auth/kakao") ||
+      url.includes("/auth/reissue");
 
     if (err.response?.status !== 401 || isAuthCall || original._retry) {
       return Promise.reject(err);
@@ -39,6 +45,8 @@ AxiosInstance.interceptors.response.use(
     try {
       if (!reissuePromise) {
         const refreshToken = localStorage.getItem("refreshToken");
+
+        console.log("서버로 보내는 리프레시 토큰 값:", refreshToken);
         // AxiosInstance가 아니라 axios로 호출 (인터셉터 재진입 방지)
         reissuePromise = axios
           .post(`${HM_DOMAIN}/auth/reissue`, { refreshToken })
@@ -47,6 +55,8 @@ AxiosInstance.interceptors.response.use(
           });
       }
       const { data } = await reissuePromise;
+      console.log("재발급 성공!");
+      console.log("서버 응답:", data);
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("refreshToken", data.refreshToken); // Rotation: 새 값으로 교체
       console.log("토큰 재발급 성공:", data);

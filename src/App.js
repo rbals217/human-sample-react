@@ -1,13 +1,10 @@
 import "./App.css";
-import About from "./pages/About";
+
 import Home from "./pages/Home";
-import Profile from "./pages/Profile";
+
 import Layout from "./pages/Layout";
 import Login from "./pages/Login";
 import Signup from "./pages/SignUp";
-import BoardList from "./pages/boards/BoardList";
-import BoardWrite from "./pages/boards/BoardWrite";
-import BoardDetail from "./pages/boards/BoardDetail";
 import ReservationDetail from "./pages/ReservationDetail";
 import ReservationSelect from "./pages/ReservationSelect";
 import ReservationSeat from "./pages/ReservationSeat";
@@ -23,11 +20,9 @@ import CustomerCenter from "./pages/CustomerCenter";
 import AccountInfo from "./pages/AccountInfo";
 import PaymentManage from "./pages/PaymentManage";
 import PaymentRegister from "./pages/PaymentRegister";
-import ChatList from "./pages/chat/ChatList";
-import ChatRoomCreate from "./pages/chat/ChatRoomCreate";
-import Chatting from "./pages/chat/Chatting";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AllConcertMenu from "./pages/AllConcertMenu";
+import KakaoCallback from "./pages/KakaoCallBack";
 
 function App() {
   return (
@@ -36,6 +31,7 @@ function App() {
         {/* 1. 로그인과 회원가입은 레이아웃 없이 단독 페이지로 설정 */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/oauth/kakao" element={<KakaoCallback />} />
 
         {/* 2. 기본 경로("/")를 포함하여 Layout을 거치는 페이지들 (홈 화면이 먼저 뜸) */}
         <Route element={<Layout />}>
@@ -65,18 +61,9 @@ function App() {
           <Route path="/mypage/reviews" element={<MyReviewList />} />
           <Route path="/mypage/customer-center" element={<CustomerCenter />} />
           <Route path="/mypage/account" element={<AccountInfo />} />
-          <Route path="/mypage/:memberId" element={<MyPageMain />} />
           <Route path="/mypage/payment" element={<PaymentManage />} />
           <Route path="/payment-register" element={<PaymentRegister />} />
           <Route path="/concertlist" element={<AllConcertMenu />} />
-          <Route path="/board" element={<BoardList />} />
-          <Route path="/board/write" element={<BoardWrite />} />
-          <Route path="/board/:boardId" element={<BoardDetail />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/profile/:name" element={<Profile />} />
-          <Route path="/chat" element={<ChatList />} />
-          <Route path="/chat/create" element={<ChatRoomCreate />} />
-          <Route path="/chat/:roomId" element={<Chatting />} />
         </Route>
       </Routes>
     </Router>
