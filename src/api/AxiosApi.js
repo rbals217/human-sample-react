@@ -32,8 +32,7 @@ const AxiosApi = {
   },
 
   // 마이페이지 회원정보 조회
-  getMypage: () => AxiosInstance.get("/auth/mypage"),
-
+  accountInfo: () => AxiosInstance.get("/auth/mypage"),
   // 게시판 관련
   boardWrite: async (title, content, email) =>
     AxiosInstance.post("/board/write", {

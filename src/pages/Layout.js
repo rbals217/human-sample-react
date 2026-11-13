@@ -196,9 +196,6 @@ export default function Layout() {
           {isLogIn ? (
             <>
               <Link to="/chat">채팅</Link> {/*로그인 했을떄만 링크 표시 */}
-              <button onClick={handleLogout} className="logout-btn">
-                로그아웃
-              </button>
               <span className="user-greeting">{userId}님</span>
               <button onClick={handleLogout} className="logout-btn">
                 로그아웃
