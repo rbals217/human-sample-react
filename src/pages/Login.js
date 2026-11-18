@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Button from "../Components/common/Button";
 import Input from "../Components/common/Input";
 import AxiosApi from "../api/AxiosApi";
-
+import { saveAuth } from "../api/AxiosInstance"; // 토큰 저장 및 자동 재발급 예약
 const Container = styled.div`
   min-height: 100vh;
   display: flex;
@@ -70,7 +70,8 @@ const KAKAO_AUTH_URL =
   "https://kauth.kakao.com/oauth/authorize?response_type=code" +
   `&client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}` +
   "&redirect_uri=" +
-  encodeURIComponent(process.env.REACT_APP_KAKAO_REDIRECT_URI);
+  encodeURIComponent(process.env.REACT_APP_KAKAO_REDIRECT_URI) +
+  "&prompt=login";
 const Login = () => {
   const [inputId, setInputId] = useState("");
   const [inputPwd, setInputPwd] = useState("");
@@ -89,19 +90,13 @@ const Login = () => {
       console.log(response.data);
 
       if (response.data) {
-        // 수정 JWT
-        localStorage.setItem("accessToken", response.data.accessToken);
-        localStorage.setItem("refreshToken", response.data.refreshToken);
-
+        // JWT 저장 및 자동 재발급 예약
+        saveAuth(response.data);
         // ⭐ 수정 1: 로그인 상태 저장
         localStorage.setItem("isLogin", "TRUE");
 
         // ⭐ 수정 2: 로그인 아이디 저장 (기존 코드 유지)
         localStorage.setItem("userId", inputId);
-
-        // ⭐ 수정 3: 백엔드에서 반환한 회원 정보 전체 저장
-
-        // ⭐ 수정 4: 회원 번호 별도 저장
 
         nav("/", { replace: true }); // 메인 홈("/")으로 이동
       } else {

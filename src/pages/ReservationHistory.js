@@ -226,15 +226,14 @@ export default function ReservationHistory() {
   const [reservations, setReservations] = useState([
     // 1. 이용 예정 예시
     {
-      id: "20261105-9201",
-      date: "2026-10-27",
-      productId: "1",
-      title: "뮤지컬 <엘리자벳> 특별 공연",
-      location: "서울시 예술의전당 오페라극장",
-      schedule: "2026.11.05 (목) 14:00",
-      seats: "선택 좌석: A1, A2",
-      price: "100,000원",
-      status: "이용 예정",
+      // 실 DB 예약번호
+      id: newBooking.reservationsId,
+      reservationsId: newBooking.reservationsId,
+
+      date: newBooking.paidAt.split("T")[0],
+      productId: newBooking.productId,
+      title: `상품 ${newBooking.productId} 예매 상품`,
+      location: "공연장 본우너 (",
     },
     // 2. 이용 완료 예시
     {

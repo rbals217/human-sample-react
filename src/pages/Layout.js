@@ -4,8 +4,8 @@ import styled from "styled-components";
 import Button from "../Components/common/Button"; // 공통 버튼 컴포넌트 (폼 등 다른 곳에서 사용)
 import Input from "../Components/common/Input"; // 공통 인풋 컴포넌트
 import logoImg from "../img/사이트 로고.png";
-import AxiosInstance from "../api/AxiosInstance"; // 토큰 자동 처리 Axios 인스턴스
-
+import AxiosInstance, { clearAuth } from "../api/AxiosInstance"; // 토큰 삭제 및 자동 재발급 예약 해제
+import AxiosApi from "../api/AxiosApi";
 const Container = styled.div`
   min-height: 100vh;
   display: flex;
@@ -128,35 +128,66 @@ export default function Layout() {
   const navigate = useNavigate();
   const [searchKeyword, setSearchKeyword] = useState("");
 
-  // 1. 로그인 상태 및 사용자 아이디 상태 관리
-  const [isLogIn, setIsLogIn] = useState(false);
+  // 로그인 상태 및 사용자 아이디 상태 관리
+  const [isLogin, setIsLogIn] = useState(false);
   const [userId, setUserId] = useState("");
 
-  // 2. 컴포넌트 마운트 시 로컬스토리지 확인
+  // 브라우저 세션 확인 및 로그인 상태 확인
   useEffect(() => {
-    const savedUserId = localStorage.getItem("userId");
+    const checkLogin = async () => {
+      //브라우저 세션 확인용 표시
+      const browserSession = sessionStorage.getItem("ticketpassBrowserSession");
 
-    if (savedUserId) {
-      setIsLogIn(true);
-      setUserId(savedUserId);
-    }
+      // 새로운 브라우저 세션이면 기존 토큰 삭제
+      if (!browserSession) {
+        clearAuth();
+        sessionStorage.setItem("ticketpassBrowserSession", "TRUE");
+
+        setIsLogIn(false);
+        setUserId("");
+        return;
+      }
+
+      // Access Token 이 없으면 로그아웃 상태
+      const accessToken = localStorage.getItem("accessToken");
+
+      if (!accessToken) {
+        setIsLogIn(false);
+        setUserId("");
+        return;
+      }
+
+      //JWT 로 실제 로그인 회원 정보 확인
+      try {
+        const response = await AxiosInstance.get("/auth/mypage");
+
+        setIsLogIn(true);
+        setUserId(response.data.userId);
+      } catch (error) {
+        console.error(" 로그인 상태 확인 실패:", error);
+
+        clearAuth();
+        setIsLogIn(false);
+        setUserId("");
+      }
+    };
+    checkLogin();
   }, []);
 
   // 3. 로그아웃 처리 함수 (백엔드 연동)
   const handleLogout = async () => {
     try {
-      // 👉 백엔드의 로그아웃 API 호출 (AxiosInstance가 알아서 accessToken을 헤더에 담아줍니다)
-      await AxiosInstance.post("/auth/logout");
+      await AxiosApi.memberLogout();
     } catch (error) {
-      console.error("서버 로그아웃 통신 중 에러 발생:", error);
-    } finally {
-      // 서버 통신 성공 여부와 상관없이 브라우저에 남은 찌꺼기(토큰 등)를 깔끔하게 청소
+      clearAuth();
+
       localStorage.removeItem("isLogin");
       localStorage.removeItem("userId");
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("email");
+
       setIsLogIn(false);
       setUserId("");
+
       alert("로그아웃 되었습니다.");
       window.location.replace("/");
     }
@@ -197,7 +228,7 @@ export default function Layout() {
           </Link>
 
           {/* 4. 로그인 상태에 따른 조건부 렌더링 */}
-          {isLogIn ? (
+          {isLogin ? (
             <>
               <Link to="/chat">채팅</Link> {/*로그인 했을떄만 링크 표시 */}
               <span className="user-greeting">{userId}님</span>

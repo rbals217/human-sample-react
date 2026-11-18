@@ -93,6 +93,17 @@ const AxiosApi = {
   chatRoom: async (roomId) => {
     return await AxiosInstance.get(`/chat/room/${roomId}`);
   },
+  // 리뷰 등록
+  createReview: async (reservationId, rating, content) => {
+    return await AxiosInstance.post(`/reviews/${reservationId}`, {
+      rating,
+      content,
+    });
+  },
+  //로그인한 회원의 예매 내역 조회
+  getMyReservations: async () => {
+    return await AxiosInstance.get("/reservation/my");
+  },
   // 카카오 로그인
   kakaoLogin: async (code) => {
     return await AxiosInstance.post("/auth/kakao", { code });
