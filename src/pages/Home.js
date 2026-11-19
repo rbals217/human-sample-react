@@ -281,7 +281,7 @@ const Home = () => {
         setDateError("");
         setDateConcerts([]);
 
-        const response = await AxiosApi.getConcertsByDate(selectedDate);
+        const response = await AxiosApi.getHomeConcertsByDate(selectedDate);
 
         if (isActive) {
           const data = Array.isArray(response.data) ? response.data : [];

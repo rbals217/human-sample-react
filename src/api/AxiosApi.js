@@ -62,6 +62,11 @@ const AxiosApi = {
     AxiosInstance.get(`/concerts/schedules/by-date`, {
       params: { date },
     }),
+  // 홈 화면 날짜별 공연 2개 조회
+  getHomeConcertsByDate: async (date) =>
+    AxiosInstance.get(`/concerts/home/by-date`, {
+      params: { date },
+    }),
   //공연 회차 등록
   createSchedule: async (concertId, scheduleData) =>
     AxiosInstance.post(`/concerts/${concertId}/schedules`, scheduleData),
