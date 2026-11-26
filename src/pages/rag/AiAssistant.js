@@ -68,7 +68,7 @@ const AiAssistant = () => {
         <Input
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
-          placeholder="게시판에 대해 물어보세요 (예: 콘서트는 어디서 하나요?)"
+          placeholder="콘서트에 대해 물어보세요 (예: 콘서트는 어디서 하나요?)"
           maxLength={500}
         />
 
