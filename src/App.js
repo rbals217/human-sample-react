@@ -28,6 +28,7 @@ import NaverCallback from "./pages/NaverCallback.js";
 import ChatList from "./pages/chat/ChatList";
 import ChatRoomCreate from "./pages/chat/ChatRoomCreate";
 import Chatting from "./pages/chat/Chatting";
+import AiAssistant from "./pages/rag/AiAssistant.js";
 
 function App() {
   return (
@@ -74,6 +75,7 @@ function App() {
           <Route path="/chat" element={<ChatList />} />
           <Route path="/chat/create" element={<ChatRoomCreate />} />
           <Route path="/chat/:roomId" element={<Chatting />} />
+          <Route path="/ai" element={<AiAssistant />} />
         </Route>
       </Routes>
     </Router>
