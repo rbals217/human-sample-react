@@ -230,8 +230,10 @@ export default function Layout() {
           {/* 4. 로그인 상태에 따른 조건부 렌더링 */}
           {isLogin ? (
             <>
+              <span className="user-greeting">
+                {userId.length > 13 ? `${userId.slice(0, 13)}...` : userId}님
+              </span>
               <Link to="/chat">채팅</Link> {/*로그인 했을떄만 링크 표시 */}
-              <span className="user-greeting">{userId}님</span>
               <button onClick={handleLogout} className="logout-btn">
                 로그아웃
               </button>

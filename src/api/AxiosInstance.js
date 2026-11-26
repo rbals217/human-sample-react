@@ -174,6 +174,8 @@ AxiosInstance.interceptors.response.use(
     const isAuthCall =
       url.includes("/auth/login") ||
       url.includes("/auth/kakao") ||
+      url.includes("/auth/naver") ||
+      url.includes("/auth/google") ||
       url.includes("/auth/reissue");
 
     if (

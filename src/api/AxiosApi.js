@@ -41,6 +41,10 @@ const AxiosApi = {
       email,
     }),
 
+  withdrawMember: async () => {
+    return await AxiosInstance.post("/auth/mypage/withdraw");
+  },
+
   boardList: async () => AxiosInstance.get("/board/list"),
 
   boardDetail: async (id) => AxiosInstance.get(`/board/${id}`),
@@ -53,23 +57,23 @@ const AxiosApi = {
   // 예매 상세 조회
   getReservation: async (reservationId) =>
     AxiosInstance.get(`/reservations/${reservationId}`),
+  // 로그인한 회원의 예매 내역 조회
+  getMyReservations: async () => AxiosInstance.get("/reservations/my"),
+  // 예매 취소
+  cancelReservation: async (reservationId) =>
+    AxiosInstance.patch(`/reservations/${reservationId}/cancel`),
 
-  // 공연 회차 관련
+  // 전체 공연 회차 조회
   getSchedules: async (concertId) =>
     AxiosInstance.get(`/concerts/${concertId}/schedules`),
-  // 선택한 날짜에 등록된 공연 목록 조회
-  getConcertsByDate: async (date) =>
-    AxiosInstance.get(`/concerts/schedules/by-date`, {
-      params: { date },
-    }),
-  // 홈 화면 날짜별 공연 2개 조회
-  getHomeConcertsByDate: async (date) =>
-    AxiosInstance.get(`/concerts/home/by-date`, {
-      params: { date },
-    }),
-  //공연 회차 등록
+  // 기존 단일 회차 등록
   createSchedule: async (concertId, scheduleData) =>
     AxiosInstance.post(`/concerts/${concertId}/schedules`, scheduleData),
+  // 선택한 날짜의 3개 회차 조회 또는 생성
+  getOrCreateSchedulesByDate: async (concertId, concertDate) =>
+    AxiosInstance.post(`/concerts/${concertId}/schedules/by-date`, {
+      concertDate,
+    }),
 
   // 좌석 관련
   createSeats: async (scheduleId, seatNumbers) =>
@@ -110,13 +114,52 @@ const AxiosApi = {
       content,
     });
   },
-  //로그인한 회원의 예매 내역 조회
-  getMyReservations: async () => {
-    return await AxiosInstance.get("/reservation/my");
+  // 내가 작성한 리뷰 조회
+  getMyReviews: async () => {
+    return await AxiosInstance.get("/reviews/my");
   },
+  // 리뷰 수정
+  updateReview: async (reviewId, rating, content) => {
+    return await AxiosInstance.put(`/reviews/${reviewId}`, {
+      rating,
+      content,
+    });
+  },
+
+  // 리뷰 삭제
+  deleteReview: async (reviewId) => {
+    return await AxiosInstance.delete(`/reviews/${reviewId}`);
+  },
+
   // 카카오 로그인
   kakaoLogin: async (code) => {
     return await AxiosInstance.post("/auth/kakao", { code });
+  },
+  // 네이버 로그인
+  naverLogin: async (code, state) => {
+    return await AxiosInstance.post("/auth/naver", {
+      code,
+      state,
+    });
+  },
+
+  // 구글 로그인
+  googleLogin: async (code) => {
+    return await AxiosInstance.post("/auth/google", {
+      code,
+    });
+  },
+  // 게시판 AI 도우미
+  ragChat: async (question, scope) => {
+    return await AxiosInstance.post("/rag/chat", { question, scope });
+  },
+  // 실패한 글 하나 다시 색인
+  ragReindex: async (concertId) => {
+    return await AxiosInstance.post(`/rag/reindex/${concertId}`);
+  },
+  // 전체 재색인 (ROLE_ADMIN 만)
+  reReindexAll: async () => {
+    return await AxiosInstance.post("/rag/reindex");
   },
 };
 

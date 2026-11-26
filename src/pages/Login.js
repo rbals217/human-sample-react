@@ -64,7 +64,46 @@ const KakaoBtn = styled.button`
   border-radius: 18px;
   cursor: pointer;
 `;
+const NaverBtn = styled.button`
+  width: 100%;
+  height: 50px;
+  color: #ffffff;
+  background-color: #03c75a;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 18px;
+  cursor: pointer;
 
+  &:hover {
+    background-color: #02b350;
+  }
+`;
+const SocialButtonGroup = styled.div`
+  display: flex;
+  gap: 12px;
+  width: 100%;
+
+  button {
+    flex: 1;
+    min-width: 0;
+  }
+`;
+const GoogleBtn = styled.button`
+  width: 100%;
+  height: 50px;
+  color: #333333;
+  background-color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  border: 1px solid #dddddd;
+  border-radius: 18px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+`;
 // 카카오 인가 코드 요청 주소 (client_id = REST API 키, 공개돼도 되는 값)
 const KAKAO_AUTH_URL =
   "https://kauth.kakao.com/oauth/authorize?response_type=code" +
@@ -72,6 +111,41 @@ const KAKAO_AUTH_URL =
   "&redirect_uri=" +
   encodeURIComponent(process.env.REACT_APP_KAKAO_REDIRECT_URI) +
   "&prompt=login";
+// 네이버 로그인 주소
+const NAVER_AUTH_URL = "https://nid.naver.com/oauth2.0/authorize";
+
+// 네이버 로그인 시작
+const naverLogin = () => {
+  const state = crypto.randomUUID();
+
+  // 콜백에서 state 검증을 위해 저장
+  sessionStorage.setItem("naver_oauth_state", state);
+
+  const params = new URLSearchParams({
+    response_type: "code",
+    client_id: process.env.REACT_APP_NAVER_CLIENT_ID,
+    redirect_uri: process.env.REACT_APP_NAVER_REDIRECT_URI,
+    state: state,
+    auth_type: "reauthenticate", // 재인증 요청
+  });
+
+  window.location.href = `${NAVER_AUTH_URL}?${params.toString()}`;
+};
+// 구글 로그인 주소
+const GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
+
+// 구글 로그인 시작
+const googleLogin = () => {
+  const params = new URLSearchParams({
+    client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+    redirect_uri: process.env.REACT_APP_GOOGLE_REDIRECT_URI,
+    response_type: "code",
+    scope: "openid email profile",
+    prompt: "select_account",
+  });
+
+  window.location.href = `${GOOGLE_AUTH_URL}?${params.toString()}`;
+};
 const Login = () => {
   const [inputId, setInputId] = useState("");
   const [inputPwd, setInputPwd] = useState("");
@@ -127,12 +201,21 @@ const Login = () => {
         <Button type="submit" enabled={isValid}>
           로그인
         </Button>
-        <KakaoBtn
-          type="button"
-          onClick={() => (window.location.href = KAKAO_AUTH_URL)}
-        >
-          카카오 로그인
-        </KakaoBtn>
+        <SocialButtonGroup>
+          <KakaoBtn
+            type="button"
+            onClick={() => (window.location.href = KAKAO_AUTH_URL)}
+          >
+            카카오 로그인
+          </KakaoBtn>
+
+          <NaverBtn type="button" onClick={naverLogin}>
+            네이버 로그인
+          </NaverBtn>
+          <GoogleBtn type="button" onClick={googleLogin}>
+            구글 로그인
+          </GoogleBtn>
+        </SocialButtonGroup>
         <SignupText>
           계정이 없으신가요?
           <Link to="/signup">회원가입</Link>
