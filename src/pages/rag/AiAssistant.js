@@ -63,18 +63,15 @@ const AiAssistant = () => {
 
   return (
     <Container>
-      <h2 style={{ margin: 0 }}>게시판 AI 도우미</h2>
+      <h2 style={{ margin: 0 }}>콘서트 AI 도우미</h2>
       <Form onSubmit={onAsk}>
         <Input
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
-          placeholder="게시판에 대해 물어보세요 (예: 스터디 모임은 언제 하나요?)"
+          placeholder="게시판에 대해 물어보세요 (예: 콘서트는 어디서 하나요?)"
           maxLength={500}
         />
-        <Select value={scope} onChange={(e) => setScope(e.target.value)}>
-          <option value="all">전체 글</option>
-          <option value="mine">내 글만</option>
-        </Select>
+
         <AskBtn type="submit" disabled={loading || !question.trim()}>
           {loading ? "찾는 중..." : "질문"}
         </AskBtn>
