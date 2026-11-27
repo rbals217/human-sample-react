@@ -113,7 +113,7 @@ const Chatting = () => {
   const [inputMsg, setInputMsg] = useState("");
   const ws = useRef(null); // WebSocket 객체 (리렌더링돼도 유지)
   const bottomRef = useRef(null); // 자동 스크롤 위치
-  const sender = localStorage.getItem("email") ?? "익명"; // 보내는 사람
+  const sender = localStorage.getItem("userId") ?? "익명"; // 보내는 사람
 
   // ① 방 정보 조회 (방 이름 표시, 없는 방이면 목록으로)
   useEffect(() => {

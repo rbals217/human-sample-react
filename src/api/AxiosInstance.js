@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const HM_DOMAIN = "http://localhost:8111";
-export const WS_URL = "ws://localhost:8111";
+export const WS_URL = "ws://localhost:8111/ws/chat";
 
 const AxiosInstance = axios.create({ baseURL: HM_DOMAIN });
 

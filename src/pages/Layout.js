@@ -4,8 +4,10 @@ import styled from "styled-components";
 import Button from "../Components/common/Button"; // 공통 버튼 컴포넌트 (폼 등 다른 곳에서 사용)
 import Input from "../Components/common/Input"; // 공통 인풋 컴포넌트
 import logoImg from "../img/사이트 로고.png";
-import AxiosInstance, { clearAuth } from "../api/AxiosInstance"; // 토큰 삭제 및 자동 재발급 예약 해제
-import AxiosApi from "../api/AxiosApi";
+import AxiosInstance from "../api/AxiosInstance"; // 토큰 자동 처리 Axios 인스턴스
+import { clearAuth } from "../api/AxiosInstance"; // 토큰 삭제 및 자동 재발급 예약 해제
+import AxiosApi from "../api/AxiosApi"; // 일반 Axios 인스턴스 (토큰 자동 처리 X)
+
 const Container = styled.div`
   min-height: 100vh;
   display: flex;
@@ -128,16 +130,15 @@ export default function Layout() {
   const navigate = useNavigate();
   const [searchKeyword, setSearchKeyword] = useState("");
 
-  // 로그인 상태 및 사용자 아이디 상태 관리
-  const [isLogin, setIsLogIn] = useState(false);
+  // 1. 로그인 상태 및 사용자 아이디 상태 관리
+  const [isLogIn, setIsLogIn] = useState(false);
   const [userId, setUserId] = useState("");
 
-  // 브라우저 세션 확인 및 로그인 상태 확인
+  // 2. 컴포넌트 마운트 시 로컬스토리지 확인
   useEffect(() => {
     const checkLogin = async () => {
       //브라우저 세션 확인용 표시
       const browserSession = sessionStorage.getItem("ticketpassBrowserSession");
-
       // 새로운 브라우저 세션이면 기존 토큰 삭제
       if (!browserSession) {
         clearAuth();
@@ -179,15 +180,15 @@ export default function Layout() {
     try {
       await AxiosApi.memberLogout();
     } catch (error) {
+      console.error("서버 로그아웃 통신 중 에러 발생:", error);
+    } finally {
       clearAuth();
-
+      // 서버 통신 성공 여부와 상관없이 브라우저에 남은 찌꺼기(토큰 등)를 깔끔하게 청소
       localStorage.removeItem("isLogin");
       localStorage.removeItem("userId");
       localStorage.removeItem("email");
-
       setIsLogIn(false);
       setUserId("");
-
       alert("로그아웃 되었습니다.");
       window.location.replace("/");
     }
@@ -205,12 +206,13 @@ export default function Layout() {
     // 3. (선택사항) 검색 후 상단바 입력창 비우기
     setSearchKeyword("");
   };
+
   return (
     <Container>
       {/* 공통 헤더 영역 */}
       <Header>
         <Logo onClick={() => navigate("/")}>
-          <img src={logoImg} alt="로고" />
+          <img src={logoImg} alt="로고" draggable="false" />
         </Logo>
 
         <SearchBox>
@@ -228,12 +230,13 @@ export default function Layout() {
           </Link>
 
           {/* 4. 로그인 상태에 따른 조건부 렌더링 */}
-          {isLogin ? (
+          {isLogIn ? (
             <>
               <span className="user-greeting">
                 {userId.length > 13 ? `${userId.slice(0, 13)}...` : userId}님
               </span>
               <Link to="/chat">채팅</Link> {/*로그인 했을떄만 링크 표시 */}
+              <button onClick={handleLogout} className="logout-btn"></button>
               <button onClick={handleLogout} className="logout-btn">
                 로그아웃
               </button>
@@ -241,7 +244,7 @@ export default function Layout() {
           ) : (
             <>
               <Link to="/login">로그인</Link>
-              <Link to="/signup">회원가입</Link>
+              <Link to="/Terms">회원가입</Link>
             </>
           )}
 

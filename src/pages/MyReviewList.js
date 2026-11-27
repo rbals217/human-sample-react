@@ -1,10 +1,10 @@
 // src/pages/mypage/MyReviewLihandleSubmitst.js
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import BackButton from "../Components/common/BackButton";
 import Button from "../Components/common/Button";
 import AxiosApi from "../api/AxiosApi";
+
 /* ───────── 스타일 컴포넌트 (화이트·블랙·보라 감성) ───────── */
 const Container = styled.div`
   max-width: 600px;
@@ -109,6 +109,7 @@ const ReviewCard = styled.div`
     border-radius: 8px;
   }
 `;
+
 const ReviewTextArea = styled.textarea`
   width: 100%;
   min-height: 100px;
@@ -137,6 +138,7 @@ const ReviewActions = styled.div`
     font-size: 13px;
   }
 `;
+
 const MyReviewList = () => {
   const [reviews, setReviews] = useState([]);
   const [editingId, setEditingId] = useState(null);
@@ -166,6 +168,7 @@ const MyReviewList = () => {
 
     fetchMyReviews();
   }, []);
+
   // 리뷰 수정 시작
   const handleEdit = (review) => {
     setEditingId(review.id);
@@ -244,6 +247,7 @@ const MyReviewList = () => {
                 <span className="product-title">{review.productTitle}</span>
                 <span className="review-date">{review.date}</span>
               </div>
+
               {editingId === review.id ? (
                 <>
                   <div className="star-rating">

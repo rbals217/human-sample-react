@@ -61,31 +61,6 @@ const TotalPriceRow = styled(InfoRow)`
   }
 `;
 
-/* 결제 수단 선택 버튼 그룹 */
-const PaymentMethodGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-`;
-
-const MethodButton = styled.button`
-  padding: 14px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  background-color: ${({ $isSelected }) =>
-    $isSelected ? "#f3e8ff" : "#ffffff"};
-  color: ${({ $isSelected }) => ($isSelected ? "#c327eb" : "#334155")};
-  border: 2px solid
-    ${({ $isSelected }) => ($isSelected ? "#c327eb" : "#e2e8f0")};
-
-  &:hover {
-    border-color: #c327eb;
-  }
-`;
-
 /* ───────── 메인 컴포넌트 ───────── */
 const ReservationPayment = () => {
   const { id } = useParams();
@@ -93,85 +68,41 @@ const ReservationPayment = () => {
   const navigate = useNavigate();
 
   // 이전 페이지(좌석 선택)에서 전달받은 데이터
-  const { date, sessionId, seats, reservation } = location.state || {
-    date: "2026-10-25",
-    sessionId: 1,
-    seats: ["A1", "A2"], // 테스트용 기본값
-  };
+  const { reservation } = location.state || {};
 
-  // 선택한 결제 수단 상태 ("card": 신용카드, "transfer": 계좌이체 등)
-  const [paymentMethod, setPaymentMethod] = useState("card");
-
-  // 좌석당 가격 계산 (예시: 1석당 50,000원)
-  const pricePerSeat = 50000;
-  const totalAmount = seats ? seats.length * pricePerSeat : 0;
+  const date = reservation?.concertDate;
+  const concertTime = reservation?.concertTime?.slice(0, 5);
+  const seats = reservation?.seats || [];
+  const totalAmount = reservation?.price || 0;
 
   // 결제 완료 버튼 클릭 시
   // 결제하기 버튼 클릭
   // 결제하기 버튼 클릭
-  const handlePaymentSubmit = async () => {
-    // 1. 로그인 여부 확인
+
+  const handlePaymentSubmit = () => {
+    // 로그인 여부 확인
     const isLogin = localStorage.getItem("isLogin") === "TRUE";
 
-    // 2. 예매 ID 확인
-    const reservationId = Number(reservation?.reservationId ?? id);
-
-    console.log("로그인 여부:", isLogin);
-    console.log("예매 ID:", reservationId);
-
-    // 3. 로그인 여부 확인
     if (!isLogin) {
-      alert("로그인 정보가 없습니다. 결제가 취소되었습니다.");
+      alert("로그인 정보가 없습니다. 로그인해주세요.");
       navigate("/login");
       return;
     }
 
-    // 4. 예매 정보 확인
+    // 예매 ID 확인
+    const reservationId = Number(reservation?.reservationId ?? id);
+
     if (!Number.isInteger(reservationId) || reservationId <= 0) {
       alert("예매 정보를 확인할 수 없습니다.");
       return;
     }
 
-    // 5. 로그인 확인 후 백엔드에 결제 요청
-    try {
-      const response = await AxiosInstance.post(
-        `/reservations/${reservationId}/payment`,
-      );
-      // 6. 백엔드 결제 성공 여부 확인
-      if (response.data.status !== "PAID") {
-        throw new Error("결제 완료 상태가 아닙니다.");
-      }
-
-      // 7. 최종 결제 데이터 생성
-      const finalBookingData = {
-        reservationId: response.data.reservationId,
-        scheduleId: response.data.scheduleId,
-        date: date,
-        seats: seats,
-        totalAmount: totalAmount,
-        paymentMethod: paymentMethod,
-        paidAt: new Date().toISOString(),
-      };
-
-      console.log("최종 결제 및 예매 완료 데이터:", finalBookingData);
-
-      alert("로그인 확인 완료! 결제가 성공적으로 완료되었습니다.");
-
-      // 8. 예매 내역으로 이동
-      navigate("/reservation/history", {
-        state: {
-          newBooking: finalBookingData,
-        },
-      });
-    } catch (error) {
-      console.error("결제 실패:", error.response?.data || error);
-
-      alert(
-        error.response?.data?.message ||
-          error.message ||
-          "결제에 실패했습니다.",
-      );
-    }
+    // 토스 결제 페이지로 이동
+    navigate(`/payment/widget?reservationId=${reservationId}`, {
+      state: {
+        reservation,
+      },
+    });
   };
   return (
     <Container>
@@ -180,12 +111,12 @@ const ReservationPayment = () => {
         <h3>예매 정보 확인</h3>
         <InfoRow>
           <span>상품 번호</span>
-          <span>상품 {id || "1"}</span>
+          <span>상품 {reservation?.concertId ?? "-"}</span>
         </InfoRow>
         <InfoRow>
           <span>관람 일시</span>
           <span>
-            {date} ({sessionId === 1 ? "14:00" : "19:30"})
+            {date} ( {concertTime} )
           </span>
         </InfoRow>
         <InfoRow>
@@ -209,25 +140,6 @@ const ReservationPayment = () => {
           <span>총 결제 금액</span>
           <span>{totalAmount.toLocaleString()}원</span>
         </TotalPriceRow>
-      </SectionBox>
-
-      {/* 3. 결제 수단 선택 박스 */}
-      <SectionBox>
-        <h3>결제 수단 선택</h3>
-        <PaymentMethodGrid>
-          <MethodButton
-            $isSelected={paymentMethod === "card"}
-            onClick={() => setPaymentMethod("card")}
-          >
-            신용 / 체크카드
-          </MethodButton>
-          <MethodButton
-            $isSelected={paymentMethod === "transfer"}
-            onClick={() => setPaymentMethod("transfer")}
-          >
-            무통장 입금
-          </MethodButton>
-        </PaymentMethodGrid>
       </SectionBox>
 
       {/* 하단 공통 결제 버튼 */}
